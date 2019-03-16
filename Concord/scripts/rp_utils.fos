@@ -394,11 +394,11 @@ bool inCombat(Critter& cr){
 }
 
 bool isWalking(Critter& cr){
-	return cr.Param[CRITTER_CURRENT_ANIM2] == ANIM2_WALK;
+	return cr.Param[CRITTER_CURRENT_ANIM2] == ANIM2_WALK && cr.IsBusy();
 }
 
 bool isRunning(Critter& cr){
-	return cr.Param[CRITTER_CURRENT_ANIM2] == ANIM2_RUN;
+	return cr.Param[CRITTER_CURRENT_ANIM2] == ANIM2_RUN && cr.IsBusy();
 }
 
 void unsafe_refreshLoook(Critter& player, int param0, int param1, int param2, string@ param3, int[]@ param4){
@@ -614,7 +614,7 @@ uint cte_DragAndDrop( Critter& cr, int identifier, uint& rate )
     Critter@ Hooker = GetCritter( rate );
     if( valid( Hooker ) && ( cr.IsDead() || cr.IsKnockout() ) )
     {
-        if( !( cr.IsKnockout() || cr.IsDead() ) || Hooker.IsRuning )
+        if( !( cr.IsKnockout() || cr.IsDead() ) || isRunning(Hooker) )
         {
             Hooker.Say( SAY_NETMSG, "Вы отпустили тело" );
             Hooker.ModeBase[ MODE_NO_RUN ] = 0;

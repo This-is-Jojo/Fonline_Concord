@@ -1,0 +1,39 @@
+#include "_macros.fos"
+
+#ifdef __CLIENT
+#include "_client_defines.fos"
+
+import bool IsCtrlDown() from "input";
+import bool IsAltDown() from "input";
+
+
+bool handleGmHotkeys( uint8 key )
+{
+	bool isHotkey = false;
+	if( IsCtrlDown() &&  key == DIK_T )
+	{
+		uint16 hexX = 0, hexY = 0;
+		GetMonitorHex(__MouseX, __MouseY, hexX, hexY, false);
+		
+		RunServerScriptUnsafe("gm_panel@unsafe_teleportToHex", hexX, hexY, 0, null, null);
+		isHotkey = true;
+	}
+	
+	return isHotkey;
+}
+
+#endif
+
+# ifdef __SERVER
+
+void unsafe_teleportToHex(Critter& player, int hexX, int hexY, int param2, string@ message, int[]@ param4)
+{
+	if(player.GetAccess() != ACCESS_ADMIN )
+	{
+		return;
+	}
+	
+	player.TransitToMap(player.GetMap().Id, hexX, hexY, player.Dir, false);
+}
+
+#endif

@@ -110,8 +110,10 @@ void finish()
 
 // //////////////////////////////////////////////////////////////////////////////////////////////////
 // Main loop function. Returned time of next call in milliseconds.
+import void loadNames() from "rp_names";
 uint loopCycle = 0;
 string prevReceivedMessage = "";
+bool firstTime = true;
 
 uint loop()
 {
@@ -120,8 +122,15 @@ uint loop()
 	__ConsoleActive = GUI_IsConsoleActive();
 
 	CritterCl@ chosen = GetChosen();
-	if(chosen !is null && GetCurrentCursor() == CURSOR_WAIT && !chosen.IsBusy())
+	if(chosen !is null && GetCurrentCursor() == CURSOR_WAIT && !chosen.IsBusy()){
 		ChangeCursor( CURSOR_DEFAULT );
+	}
+	
+	if(chosen !is null && loopCycle > 100 && firstTime)
+	{
+		loadNames();
+		firstTime = false;
+	}
 	
 	if(chosen !is null && loopCycle > 100){
 	
@@ -361,15 +370,15 @@ void render_map()
 // //////////////////////////////////////////////////////////////////////////////////////////////////
 // Called on something critter in/out game.
 import string getName(int crId) from "rp_names";
-import void loadNamesFromServer() from "rp_names";
+//import void loadNames() from "rp_names";
 
-uint lastId = 0;
+//uint lastId = 0;
 void critter_in( CritterCl& cr )
 {
-	if(cr.IsChosen() && lastId != cr.Id){
-		loadNamesFromServer();
-		lastId = cr.Id;
-	}
+	//if(cr.IsChosen() && lastId != cr.Id){
+	//	loadNames();
+	//	lastId = cr.Id;
+	//}
 	
     // Default colors
     cr.NameColor = COLOR_CRITTER_NAME;

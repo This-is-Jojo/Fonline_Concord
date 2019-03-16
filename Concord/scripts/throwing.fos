@@ -249,13 +249,21 @@ bool IsThrowingActive() // export?
 void ThrowingKeyDown( uint8 key )   // export
 {
     if( key == DIK_GRAVE && !__ConsoleActive )
+	{
         SetThrowing( true );
+		int chosenId = GetChosen().Id;
+		SetEffect(EFFECT_2D_CRITTER, chosenId, "Flush_RenderTarget.glsl");
+	}
 }
 
 void ThrowingKeyUp( uint8 key )   // export
 {
     if( key == DIK_GRAVE )
+	{
         SetThrowing( false );
+		int chosenId = GetChosen().Id;
+		SetEffect(EFFECT_2D_CRITTER, chosenId, null);
+	}
 }
 
 void ThrowingInputLost() // export

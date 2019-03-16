@@ -230,11 +230,7 @@ uint loop()
 void critter_attack( Critter& cr, Critter& target, ProtoItem& weapon, uint8 weaponMode, ProtoItem@ ammo )
 {
 	Map@ map = cr.GetMap();
-	
-	if(cr.IsNpc()){
-		cr.Wait(1200);
-	}
-	
+
 	if(map.GetProtoId() == MAP_BLANK && cr.GetAccess() < ACCESS_ADMIN){
 		cr.Say(SAY_NETMSG, "Без драк пожалуйста.");
 		return;
@@ -251,12 +247,17 @@ void critter_attack( Critter& cr, Critter& target, ProtoItem& weapon, uint8 weap
 	}
 	cr.ParamBase[CR_IN_ACTION] = 0;
 	target.ParamBase[CR_IN_ACTION] = 0;
-	
+	cr.SetDir( GetDirection( cr.HexX, cr.HexY, target.HexX, target.HexY ) );
+
 	if (cr.GetTimeEvents( CTE_SLOWRELOAD, null, null, null ) > 0){
 		cr.ModeBase[ MODE_NO_RUN ] = 0;
 		cr.EraseTimeEvents( CTE_SLOWRELOAD );
 	}
     CombatAttack( cr, target, weapon, weaponMode, useProtoAmmo ? GetProtoItem(weaponItem.Val2) : ammo );
+		
+	if(cr.IsNpc()){
+		cr.Wait(1200);
+	}
 }
 
 // //////////////////////////////////////////////////////////////////////////////////////////////////

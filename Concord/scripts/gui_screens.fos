@@ -3102,6 +3102,7 @@ namespace Game
             SetSize( 188, 67 );
         }
 
+
         void OnMouseDown( int button ) override
         {
             if( button == MOUSE_BUTTON_LEFT || button == MOUSE_BUTTON_RIGHT )

@@ -74,10 +74,20 @@ void answer_set_new_name( Critter& player, uint answerI, string& answerS )
 	dictionary names;
 	
 string getName(int crId){
+	Message("Getting Name");
 	string name;
 	names.get("" + crId, name);
 	CritterCl@ cr = GetCritter(crId);
 	CritterCl@ chosen = GetChosen();
+	
+	if(!valid(cr))
+	{
+		if(name != ""){
+			return name;
+		}
+		
+		return "Кто-то";
+	}
 	
 	if(cr.IsPlayer()){
 
@@ -90,23 +100,7 @@ string getName(int crId){
 			return name;
 		}
 		
-		return cr.Name;
-		/*
-		if(chosen.Param[CR_CURRENT_ROLE] == cr.Param[CR_CURRENT_ROLE])
-		{
-			return cr.Name;
-		}
-		
-		if(chosen.Param[CR_CURRENT_ROLE] == ROLE_COP && cr.Param[CR_CURRENT_ROLE] == ROLE_SHERIFF){
-			return cr.Name;
-		}
-
-		if(chosen.Param[CR_CURRENT_ROLE] == ROLE_SHERIFF && cr.Param[CR_CURRENT_ROLE] == ROLE_COP){
-			return cr.Name;
-		}
-		
-		return name == "" ? "Незнакомец" : name;
-		*/
+		return "Некто";
 	}
     uint   dlgId = cr.Stat[ ST_DIALOG_ID ];
     uint16 npcPid = cr.Pid;
@@ -124,7 +118,7 @@ void saveName(int crId, int trgtId, int param2, string@ name, int[]@ param4){
 	names.set("" + crId, name);
 	CritterCl@ cr = GetCritter(crId);
 	updateNick(cr);
-	SaveNamesOnServer();
+	SaveNames();
 }
 
 void updateNick( CritterCl& cr )
@@ -146,7 +140,11 @@ void updateAllNicks()
 	for(uint i = 0; i < keys.length; i++ ){
 		int crId = 0;
 		StrToInt(keys[i], crId);
-		updateNick(GetCritter(crId));
+		CritterCl@ cr = GetCritter(crId);
+		if(valid(cr))
+		{
+			updateNick(GetCritter(crId));
+		}
 	}
 }	
 
@@ -235,6 +233,7 @@ void loadNames(){
 		line = f.readLine();
 	}
 	f.close();
+	updateAllNicks();
 	Message("Вам удалось вспомнить " + names.getSize() + " " + getEnding(names.getSize()) + ".");
 }
 

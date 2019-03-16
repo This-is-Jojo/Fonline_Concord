@@ -177,6 +177,7 @@ void input_lost() // Engine callback
 }
 
 // Hotkeys handler
+import bool handleGmHotkeys( uint8 key ) from "gm_panel";
 bool HandleHotkeys( uint8 key )
 {
     // Effect example, temporary
@@ -203,6 +204,7 @@ bool HandleHotkeys( uint8 key )
     // Hotkeys
     bool isHotkey = true;
     bool inputFocused = ( cast< GUITextInput >( GUI_GetFocusedObject() ) !is null || __ConsoleActive || GUI_IsConsoleActive() );
+	
     if( !IsCtrlDown() && !IsAltDown() && !IsShiftDown() )
     {
         switch( key )
@@ -516,6 +518,12 @@ bool HandleHotkeys( uint8 key )
         if( key == DIK_RCONTROL || key == DIK_LCONTROL || key == DIK_RCONTROL || key == DIK_LCONTROL )
             CustomCall( "SetCursorPos" );
     }
+	
+	if( !inputFocused && !isHotkey)
+	{
+		isHotkey = handleGmHotkeys(key);
+	}
+	
     return isHotkey;
 }
 

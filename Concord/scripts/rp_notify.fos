@@ -32,6 +32,7 @@
 
 #ifdef __CLIENT
 	#include "_client_defines.fos"
+	import string getName(int crId) from "rp_names";
 	
 	void Notify(int atcrId, int trgtId, int param2, string@ message, int[]@ param4){
 		string atcrName = GetCritter(atcrId) !is null ? GetCritter(atcrId).Name : "кто-то";
@@ -46,12 +47,15 @@
 		message = "|0xFFBB33CC " + "**неразборчиво** |0xF8F993 ";
 		MapMessage(message, hexX, hexY, __TextDelay + message.length() * 30, 0xF8F993, true, Random(-5, 5), -20 );
 		CritterCl@ talker = GetCritter(id);
-		
 		string name = "Некто";
-		
+				
 		if( talker !is null )
 		{
 			name = talker.Name;
+		}
+		else
+		{
+			name = getName(id);
 		}
 		
 		Message(name + ": " + message  );
@@ -61,12 +65,15 @@
 	{
 		MapMessage(message, hexX, hexY, __TextDelay + message.length() * 30, 0xF8F993, true, Random(-5, 5), -20 );
 		CritterCl@ talker = GetCritter(id);
-		
 		string name = "Некто";
-		
+				
 		if( talker !is null )
 		{
 			name = talker.Name;
+		}
+		else
+		{
+			name = getName(id);
 		}
 		
 		Message(name + ": |0xF8F993 " + message);
