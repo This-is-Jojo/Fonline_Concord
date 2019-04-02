@@ -27,3 +27,6 @@
 --- scripts                      Скрипты
 --- text                         Тексты
 --- update                       Данные для обновления клиента
+
+Client.zip https://yadi.sk/d/IkIO0sKQ3ZsKfb
+Fullpack.zip https://yadi.sk/d/0jS-1O32lJIvvg
